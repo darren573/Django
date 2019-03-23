@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自强学堂</title>
+</head>
+<body>
+<a href="/add2/4/5">计算4+5</a><br/>
+{{ string }}<br/>
+<h4>教程列表:</h4>
+{% for i in num_list %}
+    {{ i }}
+{% endfor %}<br/>
+
+{% for dic_key,dic_value in info_dict.items %}
+    {{ dic_key }}:{{ dic_value }}
+{% endfor %}<br/>
+
+{% for foo in List %}
+    {{ foo }}{% if not forloop.last %},{% endif %}
+{% endfor %}<br/>
+
+{% if var >= 90 %}
+    成绩优秀，自强学堂你没少去吧！学的不错。
+{% elif var >= 80 %}
+    成绩良好
+{% elif var >= 70 %}
+    成绩一般
+{% elif var >= 60 %}
+    需要努力
+{% else %}
+    不及格啊，大哥！多去自强学堂学习啊！
+{% endif %}<br/>
+{% if request.user.is_authenticated %}
+    {{ request.user.username }},您好！
+{% else %}
+    您还没有登录，请进行登录。
+{% endif %}
+</body>
+</html>
