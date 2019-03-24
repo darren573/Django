@@ -27,19 +27,23 @@ urlpatterns = [
     # path('', boards_views.home),
     path('', boards_views.test, name='board_test'),
 
-    # python 2.+ url匹配规则
+    # Django 1.+ url匹配规则
     # url((r'^boards/(?P<pk>\d+)/$', boards_views.board_topics, name='board_topics'),
     # url((r'^boards/(?P<pk>\d+)/new/$', boards_views.new_topic, name='new_topic'),
 
-    # python 3.+ path 匹配规则
-    path('boards/<int:pk>/', boards_views.board_topics, name='board_topics'),
+    # Django2.+ path 匹配规则
+    #  path('boards/<int:pk>/', boards_views.board_topics, name='board_topics'),
     path('boards/<int:pk>/new/', boards_views.new_topic, name='new_topic'),
+
     # 注册
     path('signup/', accounts_views.signup, name='signup'),
+
     # 注销
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
     # 登录
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+
     # 密码重置
     path('reset/', auth_views.PasswordResetView.as_view(
         template_name='password_reset.html',
@@ -50,20 +54,42 @@ urlpatterns = [
     path('reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html')),
     path('reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
          name='password_reset_done'),
+    # Django2.+中的正则表达方式
     re_path('reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})',
             auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),
             name='password_reset_confirm'),
     path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
          name='password_rest_complete'),
+
     # 修改密码
     path('setting/password', auth_views.PasswordChangeView.as_view(template_name='password_change.html'),
          name='password_change'),
+
     # 修改密码完成
     path('setting/password/done', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
          name='password_change_done'),
+
     # 主题回复
-    path('boards/<int:pk>/topics/<int:topic_pk>', boards_views.topic_posts, name='topic_posts'),
+    # path('boards/<int:pk>/topics/<int:topic_pk>', boards_views.topic_posts, name='topic_posts'),
     path('boards/<int:pk>/topics/<int:topic_pk>/reply/', boards_views.reply_topic, name='reply_topic'),
+
+    # # FBV 基于函数的视图
+    # path('new_post/', boards_views.new_post, name='new_post'),
+    #
+    # # CBV 基于类的视图
+    # path('new_post/', boards_views.NewPostView.as_view(), name='new_post'),
+    #
+    # # GCBV 基于类的通过视图
+    # path('new_post/', boards_views.NewPost.as_view, name='new_post'),
+
+    # 通过GCBV的方式实现编辑
+    path('boards/<int:pk>/topics/<int:topic_pk>/posts/<int:post_pk>/edit/ ',
+         boards_views.PostUpdateView.as_view(), name='edit_post'),
+
+    # 基于GCBV实现分页
+    path('boards/<int:pk>/', boards_views.TopicListView.as_view(), name='board_topics'),
+    path('boards/<int:pk>/topics<int:topic_pk>', boards_views.PostListView.as_view(), name='topic_posts'),
+
     path('index/', learn_views.index),
     path('second/', learn_views.second),
     path('third/', learn_views.third),
