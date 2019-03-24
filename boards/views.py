@@ -4,6 +4,7 @@ from .models import Board, Topic, Post
 from django.contrib.auth.models import User
 from .forms import NewTopicForm, PostForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 
 # Create your views here.
@@ -26,8 +27,9 @@ def test(request):
 
 
 def board_topics(request, pk):
-    board = Board.objects.get(pk=pk)
-    return render(request, 'new_topics.html', {'board': board})
+    board = get_object_or_404(Board, pk=pk)
+    topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts'))
+    return render(request, 'new_topics.html', {'board': board, 'topics': topics})
 
 
 '''使用HTML自带form操作方法'''
@@ -81,6 +83,8 @@ def new_topic(request, pk):
 
 def topic_posts(request, pk, topic_pk):
     topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    topic.views += 1
+    topic.save()
     return render(request, 'topic_posts.html', {'topic': topic})
 
 
