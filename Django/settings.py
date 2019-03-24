@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     # 负责管理静态文件 CSS JavaScript 字体 图片
     'django.contrib.staticfiles',
+    'django.contrib.humanize',  # 人性化
 
     'learn',
     'people',
