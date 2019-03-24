@@ -51,7 +51,7 @@ urlpatterns = [
         subject_template_name='password_reset_subject.txt'
     ),
          name='password_reset'),
-    path('reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html')),
+    # path('reset/', auth_views.PasswordResetView.as_view(template_name='password_reset.html')),
     path('reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'),
          name='password_reset_done'),
     # Django2.+中的正则表达方式
@@ -89,6 +89,9 @@ urlpatterns = [
     # 基于GCBV实现分页
     path('boards/<int:pk>/', boards_views.TopicListView.as_view(), name='board_topics'),
     path('boards/<int:pk>/topics<int:topic_pk>', boards_views.PostListView.as_view(), name='topic_posts'),
+
+    # 个人账户功能实现
+    path('settings/account/', accounts_views.UserUpdateView.as_view(), name='my_account'),
 
     path('index/', learn_views.index),
     path('second/', learn_views.second),

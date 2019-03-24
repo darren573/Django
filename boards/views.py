@@ -7,6 +7,8 @@ from django.db.models import Count
 from django.views.generic import UpdateView, ListView
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 
 # Create your views here.
@@ -31,11 +33,6 @@ def test(request):
 def board_topics(request, pk):
     board = get_object_or_404(Board, pk=pk)
     # 基于函数的视图实现分页
-    """
-    board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
-    由于上面的代码执行结果超出预期，这种FBV基于函数的视图实现分页的方式暂时不可取
-    本代码引起的错误还有是Replies模块，本人已向作者提交问题，同时也希望各位大佬能够解决
-    """
     queryset = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
     page = request.GET.get('page', 1)
     paginator = Paginator(queryset, 20)
@@ -174,3 +171,5 @@ class PostListView(ListView):
         self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))
         queryset = self.topic.posts.order_by('created_at')
         return queryset
+
+

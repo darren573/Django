@@ -9,7 +9,7 @@
                     <form method="post" novalidate>
                         {% csrf_token %}
                         <!--防止未登录用户创建话题，重定向之后隐藏多余字段-->
-{#                        <input type="hidden" name="next" value="{{ next }}]">#}
+                        {#                        <input type="hidden" name="next" value="{{ next }}]">#}
                         {% include 'includes/form.html' %}
                         <button type="submit" class="btn btn-primary btn-block">Log in</button>
                     </form>
@@ -20,7 +20,7 @@
             </div>
             <div class="text-center py-2">
                 <small>
-                    <a href="#" class="text-muted">Forgot your password?</a>
+                    <a href="{% url 'password_reset' %}" class="text-muted">Forgot your password?</a>
                 </small>
             </div>
         </div>
